@@ -19,7 +19,7 @@ datab = Database()
 
 def writerows(rows, filename):
     highScore_df = pd.DataFrame.from_dict(rows)
-    highScore_df.to_csv(filename, index = False, header = True)
+    highScore_df.to_csv(filename, index = False, header = True, mode='a')
  
 def getHighScores(listingurl):
     # prepare headers
@@ -50,20 +50,22 @@ def getHighScores(listingurl):
         hiscores["name"] = rows.findChildren()[1].a.text.replace('\n', "").replace(u'\xa0', u' ')
         hiscores["level"] = int(rows.findChildren()[3].text.replace('\n', "").replace(',', ""))
         hiscores["exp"] = int(rows.findChildren()[4].text.replace('\n', "").replace(',', ""))
-        datab.connect_set(hiscores, "league_hiscores")
+        datab.connect_set(hiscores, "leaderboard_stats_league_hiscores")
         listings.append(hiscores)
             
 
     return listings
 
+def getNextPage():
+    return "test"
 
 if __name__ == "__main__":
     page = 1
-    baseurl = "https://secure.runescape.com/m=hiscore_oldschool_seasonal/overall" 
+    baseurl = "https://secure.runescape.com/m=hiscore_oldschool_seasonal/overall?table=0&page="
     
     # scrap all pages
-    while page < 2:
-        listings = getHighScores(baseurl)
+    while page < 5:
+        listings = getHighScores(baseurl + str(page))
         # write to CSV        
         writerows(listings, "saved_logs/osrs_league_hiscores_" + time_string + ".csv")
         # take a break

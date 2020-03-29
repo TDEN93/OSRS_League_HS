@@ -26,7 +26,8 @@ class Database:
             conn.commit()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            print("Error while connecting to PostgreSQL", error)
+            pass
+            # print("Error while connecting to PostgreSQL", error)
         finally:
             # closing database connection.
             if(conn):
