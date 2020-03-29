@@ -132,3 +132,5 @@ dmypy.json
 *.ini
 
 osrs_league_project.txt
+
+.vscode
